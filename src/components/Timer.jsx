@@ -13,11 +13,12 @@ class Timer extends React.Component{
       minutes : 0,
       seconds: 0,
       isRunning: false,
-      intervalId : null
+      intervalId : null,
+      title : '',
     };
   }
   
-  startTimer() {
+  startTimer = () => {
     // preventing multiple starts
     if(this.state.isRunning){
       return 
@@ -29,19 +30,22 @@ class Timer extends React.Component{
     
     let totalSeconds = hours* 3600 + minutes * 60 +  seconds;
     
-    // stop reaching 0
+    // stop if 0
     if(totalSeconds <= 0 ){
       return
     }
-    this.setState({ isRunning: true });
+    this.setState({ isRunning: true, title : '' });
     
     
-    this.intervalId = setInterval(() => { 
+    this.intervalId = setInterval(async() => { 
       //stop after reaching 0
       if(totalSeconds <= 0){
         clearInterval(this.intervalId);
         this.setState({ isRunning: false });
-        window.alert("ding! ding! , ding! ding! ...")
+        window.alert("ding ding ding")
+        this.setState(
+          {title : this.props.title}
+        )
         return;
       }
       
@@ -59,39 +63,40 @@ class Timer extends React.Component{
       
     }, 1000);
     
-    
-    
-    
   }
   
-  resetTimer(){
+  resetTimer = ()=> {
     this.setState({
       isRunning : false,
       hours: 0,
       minutes: 0,
       seconds : 0,
+      title : ''
       
     })
     clearInterval(this.intervalId)
   }
+  
+
   render(){
     console.log("render")
     return(
       <div className="timer">
+      
       
       <h2 className="timer-h2" id="timer-dispaly">
       {String(this.state.hours).padStart(2, "0")}:
       {String(this.state.minutes).padStart(2, "0")}:
       {String(this.state.seconds).padStart(2, "0")}
       </h2>
-      
+      <h3 id="title">{this.state.title}</h3>
       <form className="timer-input">
       <input id="hours" type="number"defaultValue={0} min={0} max={99}/>
       <input id="minutes" type="number"defaultValue={0} min={0} max={60} />
       <input id="seconds" type="number"defaultValue={0}  min={0} max={60}/>
       </form>
-      <button onClick={this.startTimer.bind(this)}>START</button>
-      <button onClick={this.resetTimer.bind(this)}>RESET</button>
+      <button type="button" onClick={this.startTimer}>START</button>
+      <button type="button" onClick={this.resetTimer}>RESET</button>
       
       </div>
       

@@ -6,11 +6,17 @@ import Title from './Title.jsx'
 
 
 class App extends React.Component {
+  constructor(){
+    super();
+    this.state = {
+      title: "alarm went off"
+    }
+  }
   render(){
     return (
       <div className="main">
-          <Title/>
-          <Timer/>      
+          <Title   />
+          <Timer title={this.state.title} />      
       </div>
     )
   }
